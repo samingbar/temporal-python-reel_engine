@@ -18,3 +18,9 @@ bin/
 
 # MacOS
 .DS_Store
+
+# Local env/secrets
+**/.env
+.env
+**/.venv/
+.venv/
