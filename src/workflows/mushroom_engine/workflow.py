@@ -1,14 +1,12 @@
-# workflow.py
+# TODO: @samingbar ADD UNIT TESTS FOR THIS WORKFLOW
 from __future__ import annotations
-
 import json
 import logging
 from datetime import timedelta
 from typing import Any
-
-from query_info import QueryInfo  # safe to import (stdlib dataclass only)
 from temporalio import workflow
 from temporalio.common import RetryPolicy
+from .query_info import QueryInfo  # safe to import (stdlib dataclass only)
 
 
 @workflow.defn(name="recommend_viral_dog_reels")
@@ -29,8 +27,12 @@ class RecommendViralReelsWorkflow:
             "fetch_trending_dog_shorts", args=[qi.query, "date", 25], **act
         )
         logging.info(f"Fetched {len(trends)} trends")
+
+        #### TODO: @samingbar REFACTOR INTO THE WORKFLOW CODE ####
         trend_block = await workflow.execute_activity("summarize_trends", args=[trends], **act)
         logging.info(f"Generated trend block: {trend_block}")
+
+        
         raw = await workflow.execute_activity(
             "generate_ideas", args=[qi.dog_profile, trend_block, qi.min_ideas, qi.max_ideas], **act
         )
@@ -38,9 +40,15 @@ class RecommendViralReelsWorkflow:
         ideas_raw = await workflow.execute_activity(
             "repair_json_if_needed", args=[raw, qi.min_ideas, qi.max_ideas], **act
         )
+
+        #### TODO: @samingbar REFACTOR INTO THE WORKFLOW CODE####
         logging.info(f"Repaired raw ideas: {ideas_raw}")
+
+        #### TODO: @samingbar REFACTOR INTO THE WORKFLOW CODE####
         ideas = await workflow.execute_activity("normalize_and_validate", args=[ideas_raw], **act)
         logging.info(f"Normalized and validated ideas: {ideas}")
+
+
         scripts_bundle = await workflow.execute_activity(
             "generate_scripts_and_rank",
             args=[

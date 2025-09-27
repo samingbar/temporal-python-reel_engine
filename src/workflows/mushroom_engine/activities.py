@@ -1,3 +1,4 @@
+#TODO: @samingbar ADD UNIT TESTS FOR THESE ACTIVITIES
 import asyncio
 import datetime as dt
 import json
@@ -37,7 +38,7 @@ class Idea(BaseModel):
     virality_rationale: str
     effort_level: str  # "low" | "medium" | "high"
 
-
+#### TODO: @samingbar CONVERT TO AGENTIC TOOL USE (AS IN ORIGINAL SCRIPT) INSTEAD OF A FIXED API CALL ####
 @activity.defn(name="fetch_trending_dog_shorts")
 async def fetch_trending_dog_shorts(
     query: str = "dog #shorts", order: str = "date", max_results: int = 25
@@ -75,7 +76,7 @@ async def fetch_trending_dog_shorts(
     except HttpError as e:
         raise RuntimeError(f"YouTube fetch failed: {e}") from e
 
-
+#### TODO: @samingbar MOVE TO WORKFLOW CODE OR CONVERT TO LLM-BASED SUMMARIZATION ####
 @activity.defn(name="summarize_trends")
 async def summarize_trends(trends: list[dict[str, Any]]) -> str:
     lines = []
@@ -99,8 +100,6 @@ DOG PROFILE:\n{dog_profile}\n\nTRENDS:\n{trend_block}
 def _estimate_tokens(text: str) -> int:
     return math.ceil(len(text) / 4)
 
-
-# Prefer the modern OpenAI client
 try:
     from openai import OpenAI
 
@@ -164,7 +163,7 @@ def _extract_json_array(text: str) -> list:
     except Exception:
         return []
 
-
+#### TODO: @samingbarMOVE TO WORKFLOW CODE ####
 @activity.defn(name="repair_json_if_needed")
 async def repair_json_if_needed(
     raw_output: str, idea_min: int, idea_max: int
@@ -189,7 +188,7 @@ async def repair_json_if_needed(
         raise RuntimeError("Failed to repair JSON idea list.")
     return ideas
 
-
+#### TODO: @samingbar MOVE TO WORKFLOW CODE ####
 @activity.defn(name="normalize_and_validate")
 async def normalize_and_validate(ideas_raw: list[dict[str, Any]]) -> list[dict[str, Any]]:
     clean: list[dict[str, Any]] = []
@@ -210,7 +209,7 @@ async def normalize_and_validate(ideas_raw: list[dict[str, Any]]) -> list[dict[s
         clean.append(obj)
     return clean
 
-
+#### TODO: @samingbar MOVE CODE FROM SCRIPT_WRITER.PY INTO ACTIVITY AND RETIRE SCRIPT_WRITER.PY ####
 @activity.defn(name="generate_scripts_and_rank")
 async def generate_scripts_and_rank(
     ideas: list[dict[str, Any]],

@@ -1,7 +1,10 @@
 import asyncio
 import logging
 
-from activities import (
+from temporalio.client import Client
+from temporalio.worker import Worker
+
+from .activities import (
     fetch_trending_dog_shorts,
     generate_ideas,
     generate_scripts_and_rank,
@@ -9,9 +12,7 @@ from activities import (
     repair_json_if_needed,
     summarize_trends,
 )
-from temporalio.client import Client
-from temporalio.worker import Worker
-from workflow import RecommendViralReelsWorkflow
+from .workflow import RecommendViralReelsWorkflow
 
 
 async def main():

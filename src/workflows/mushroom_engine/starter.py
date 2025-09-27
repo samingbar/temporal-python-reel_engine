@@ -2,7 +2,8 @@ import asyncio
 
 from query_info import QueryInfo
 from temporalio.client import Client
-from workflow import RecommendViralReelsWorkflow
+
+from .workflow import RecommendViralReelsWorkflow
 
 
 async def main():

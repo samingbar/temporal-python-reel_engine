@@ -1,3 +1,6 @@
+### TODO: @samingbar Depricate this file by offloading relevant code to activities/worklfow files ####
+
+
 """script_writer_workflow.py
 
 Purpose:
